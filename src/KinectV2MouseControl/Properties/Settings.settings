@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="Smoothing" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0.2</Value>
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="Mode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="MoveScale" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="HoverRange" Type="System.Double" Scope="User">
       <Value Profile="(Default)">20</Value>
