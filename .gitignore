@@ -44,3 +44,5 @@ Temporary Items
 /src/.vs/KinectV2MouseControl/v15/Server/sqlite3
 /src/KinectV2MouseControl/bin/Debug
 /src/.vs/KinectV2MouseControl/v15
+/src/KinectV2MouseControl/obj/Debug/Views/Tasks
+obj/Debug

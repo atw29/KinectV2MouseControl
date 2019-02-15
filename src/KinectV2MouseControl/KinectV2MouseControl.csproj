@@ -59,6 +59,19 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\KinectCursorViewModel.cs" />
     <Compile Include="Views\RadioCheckedToBoolConverter.cs" />
+    <Compile Include="Views\Tasks\Lighting_Control.xaml.cs">
+      <DependentUpon>Lighting_Control.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Menu_Task.xaml.cs">
+      <DependentUpon>Menu_Task.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\MockUp.xaml.cs">
+      <DependentUpon>MockUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\X-Rays.xaml.cs">
+      <DependentUpon>X-Rays.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\ZoomBorder.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +89,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Lighting_Control.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Menu_Task.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\MockUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\X-Rays.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -111,6 +140,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\xray.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,18 @@
+﻿<Window x:Class="KinectV2MouseControl.Views.Tasks.Lighting_Control"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KinectV2MouseControl.Views.Tasks"
+        mc:Ignorable="d"
+        Title="LightingControl" Height="250" Width="500">
+    <Grid>
+        <StackPanel>
+            <Label x:Name="label" Content="Lighting Control" Margin="10,0,10,10" FontWeight="Bold" FontSize="20" HorizontalContentAlignment="Center" />
+            <Slider x:Name="slider" Margin="10" VerticalAlignment="Center" Maximum="100" TickPlacement="BottomRight" TickFrequency="5" Value="20" IsSnapToTickEnabled="True"/>
+            <Label Content="{Binding ElementName=slider, Path=Value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+            <Button x:Name="Apply" Margin="10,10,10,10" Content="Apply" Width="250" Height="25" Click="Apply_Click"/>
+            <Button x:Name="Exit" Margin="10,10,10,10" Content="Exit Without Saving" Width="250" Height="25" Click="Apply_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

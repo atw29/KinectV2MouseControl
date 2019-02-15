@@ -1,0 +1,97 @@
+﻿<Window x:Class="KinectV2MouseControl.Views.Tasks.MockUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KinectV2MouseControl.Views.Tasks"
+        mc:Ignorable="d"
+        Title="MockUp" Height="500" Width="500">
+    <FrameworkElement.Resources>
+        <Style x:Key="GridItemsStyle"
+           TargetType="ItemsControl">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="5*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </FrameworkElement.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="10,10,10,10">
+            <Label Margin="0,0,10,0" Content="Patient Information" FontWeight="Medium" FontSize="20"/>
+            <ItemsControl x:Name="FirstName" Style="{StaticResource GridItemsStyle}" Margin="10,10,10,10" >
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="First Name" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="Alex" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </ItemsControl>
+            <ItemsControl x:Name="Surname" Style="{StaticResource GridItemsStyle}" Margin="10,10,10,10" >
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="Surname" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="Weeks" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </ItemsControl>
+            <ItemsControl x:Name="Email" Style="{StaticResource GridItemsStyle}" Margin="10,10,10,10" >
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="Email" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="atw29@bath.ac.uk" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </ItemsControl>
+            <ItemsControl x:Name="Address_1" Style="{StaticResource GridItemsStyle}" Margin="10,10,10,10" >
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="Address" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="34 Beckhampton Road" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </ItemsControl>
+            <ItemsControl x:Name="Address_2" Style="{StaticResource GridItemsStyle}" Margin="10,10,10,10" >
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="Bath" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </ItemsControl>
+            <Grid x:Name="CountyPostcode" Margin="10,10,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="County" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="Bath" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <Label FontWeight="Medium" Margin="0,0,10,0" Content="Postcode" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                <TextBox Padding="5,0,0,0" Margin="10,0,0,0" Text="BA2 3LL" Grid.Row="0" Grid.Column="3" VerticalContentAlignment="Center"/>
+
+            </Grid>
+
+            <!--Patients Records-->
+            <Label Margin="0,0,10,0" Content="Patient Records" FontWeight="Medium" FontSize="20"/>
+            <TextBlock Margin="10,0,0,0" x:Name="textBlock" TextAlignment="Justify" HorizontalAlignment="Left" Width="435" TextWrapping="Wrap" VerticalAlignment="Top" Height="Auto" FontStyle="Italic">
+                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam neque arcu, sodales laoreet enim pharetra quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In at quam dignissim, feugiat orci tristique, scelerisque sem. Donec nulla mauris, venenatis id sodales eget, auctor vitae nisl. Quisque blandit mollis quam a cursus. Vestibulum commodo scelerisque tortor. Nulla condimentum, arcu nec rutrum molestie, ex ipsum ornare dolor, at vehicula massa massa hendrerit nisi. Aenean mauris velit, accumsan quis pharetra id, tempus et nisi."/><LineBreak/><Run/><LineBreak/><Run Text="Nam dui justo, vehicula nec ornare et, malesuada eu risus. Sed placerat sem at diam convallis, vel pulvinar nibh ornare. Mauris mi sem, dapibus et efficitur aliquam, congue sit amet justo. Etiam orci diam, interdum a scelerisque at, vestibulum facilisis velit. Suspendisse vel ipsum dictum, luctus dui quis, porttitor sem. Fusce tempus odio a felis iaculis euismod. Aenean malesuada lectus eget ante rutrum, vitae efficitur odio molestie. Etiam non laoreet justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam quis pretium dui. Integer felis diam, molestie eu eleifend at, semper eu diam. Sed in felis sit amet sem fringilla vestibulum. Integer erat leo, volutpat vel iaculis a, facilisis vel dolor. Curabitur in lorem lectus."/>
+            </TextBlock>
+
+
+            <Label Margin="0,0,10,0" Content="Personal Options" FontWeight="Medium" FontSize="20"/>
+            <Button Margin="10" Width="250" Content="Option One" />
+            <Button Margin="10" Width="250" Content="Option Two" />
+            <Button Margin="10" Width="250" Content="Option Three" />
+            <Button Margin="10" Width="250" Content="Option Four" />
+
+            <Label Margin="0,0,10,0" Content="Other Records" FontWeight="Medium" FontSize="20"/>
+            <TextBlock Margin="10,0,0,0" x:Name="textBlockB" TextAlignment="Justify" HorizontalAlignment="Left" Width="435" TextWrapping="Wrap" VerticalAlignment="Top" Height="Auto" FontStyle="Italic">
+                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam neque arcu, sodales laoreet enim pharetra quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In at quam dignissim, feugiat orci tristique, scelerisque sem. "/>
+            </TextBlock>
+
+            <!--Patient Documents-->
+            <Label Margin="0,0,10,0" Content="Patient Documents" FontWeight="Medium" FontSize="20"/>
+            <Button Margin="10,10,10,10" Content="View Patient's X-Rays" Width="250" Click="Button_Click" >
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="X-Ray Has Been Verified" Click="MenuItem_Click" />
+                        <Separator />
+                        <MenuItem Header="X-Ray Has Not Been Verified" />
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+            <CheckBox x:Name="VerifiedCheckBox" Margin="10,10,10,10" Content="Details Have Been Checked" HorizontalAlignment="Center" IsEnabled="False" />
+
+        </StackPanel>
+
+    </ScrollViewer>
+</Window>
