@@ -6,6 +6,9 @@ namespace KinectV2MouseControl
 {
     public class KinectCursorViewModel : INotifyPropertyChanged
     {
+
+        #region Their Code
+
         KinectCursor kinectCursor;
 
         const double DEFAULT_MOVE_SCALE = 1f;
@@ -25,6 +28,8 @@ namespace KinectV2MouseControl
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #region UI Comps
 
         public double MoveScale
         {
@@ -91,6 +96,8 @@ namespace KinectV2MouseControl
             }
         }
 
+        #endregion
+
         public void LoadSettings()
         {
             MoveScale = Properties.Settings.Default.MoveScale;
@@ -125,6 +132,10 @@ namespace KinectV2MouseControl
             SaveSettings();
             ControlModeIndex = 0;
         }
+
+        #endregion 
+
+
 
     }
 }
