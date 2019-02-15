@@ -134,6 +134,7 @@ namespace KinectV2MouseControl
 
             xPosList = new List<double>();
             yPosList = new List<double>();
+            
         }
 
         private void Kinect_OnLostTracking(object sender, EventArgs e)
@@ -155,7 +156,7 @@ namespace KinectV2MouseControl
             
             for(int i = 1; i >= 0; i--) // Starts looking from right hand.
             {
-                bool isLeft = false; // = (i == 0)
+                bool isLeft = (i ==0); // = (i == 0)
                 if (body.IsHandLiftForward(isLeft))
                 {
                     if (usedHandIndex == -1)
@@ -225,28 +226,49 @@ namespace KinectV2MouseControl
 
             ToggleHoverTimer(Mode == ControlMode.HoverToClick && usedHandIndex != -1);
         }
-
+        private int NumberTimesClosed = 0;
+        private MouseControlState OnlyClick()
+        {
+            MouseControlState controlState;
+            if (NumberTimesClosed == 0)
+            {
+                controlState = MouseControlState.ShouldClick;
+                System.Diagnostics.Debug.WriteLine("Hand Closed for First Time");
+            }
+            else if (NumberTimesClosed > 8)
+            {
+                controlState = MouseControlState.ShouldPress;
+                System.Diagnostics.Debug.WriteLine("Hand Closed 8 Times. Pressing");
+            }
+            else
+            {
+                controlState = MouseControlState.None;
+            }
+            System.Diagnostics.Debug.WriteLine("Hand Closed " + NumberTimesClosed);
+            //} else
+            //{
+            //    controlState = MouseControlState.None;
+            //}
+            NumberTimesClosed++;
+            // Doesn't Appear to Work
+            return controlState;
+        }
         private void DoMouseControlByHandState(int handIndex, HandState handState)
         {
             MouseControlState controlState;
             switch (handState)
             {
                 case HandState.Closed:
+                    //controlState = OnlyClick();
+                    NumberTimesClosed++;
+                    System.Diagnostics.Debug.WriteLine($"Closed : {NumberTimesClosed}");
                     controlState = MouseControlState.ShouldPress;
-                    if (!handWasClosed)
-                    {
-                        controlState = MouseControlState.ShouldClick;
-                        System.Diagnostics.Debug.WriteLine("Hand Closed for First Time");
-                        handWasClosed = true;
-                    }
-                    //System.Diagnostics.Debug.WriteLine("Hand Closed");
-                    //handWasClosed = true;
                     break;
                 case HandState.Open:
-                    if (handWasClosed)
+                    if (NumberTimesClosed > 0)
                     {
                         System.Diagnostics.Debug.WriteLine("Hand Open");
-                        handWasClosed = false;
+                        NumberTimesClosed = 0;
                     }
                     controlState = MouseControlState.ShouldRelease;
                     break;
@@ -278,9 +300,9 @@ namespace KinectV2MouseControl
         {
             if (controlState == MouseControlState.ShouldClick)
             {
-                MouseControl.Click();
                 if (!handGrips[handIndex])
                 {
+                    MouseControl.Click();
                     handGrips[handIndex] = true;
                 }
             }else if (controlState == MouseControlState.ShouldPress)
@@ -299,9 +321,9 @@ namespace KinectV2MouseControl
 
         private void ReleaseGrip(int index)
         {
+            MouseControl.PressUp();
             if (handGrips[index])
             {
-                MouseControl.PressUp();
                 handGrips[index] = false;
             }
         }

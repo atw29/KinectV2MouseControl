@@ -70,7 +70,7 @@ namespace KinectV2MouseControl
             LongerRange
         }
 
-        private ScaleAlignment _scaleAlign = ScaleAlignment.None;
+        private ScaleAlignment _scaleAlign = ScaleAlignment.Both;
         public ScaleAlignment ScaleAlign
         {
             get
