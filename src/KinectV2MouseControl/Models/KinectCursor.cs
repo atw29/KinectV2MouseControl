@@ -155,7 +155,7 @@ namespace KinectV2MouseControl
             
             for(int i = 1; i >= 0; i--) // Starts looking from right hand.
             {
-                bool isLeft = false;
+                bool isLeft = false; // = (i == 0)
                 if (body.IsHandLiftForward(isLeft))
                 {
                     if (usedHandIndex == -1)

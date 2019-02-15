@@ -25,7 +25,7 @@ namespace KinectV2MouseControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.7")]
         public double Smoothing {
             get {
                 return ((double)(this["Smoothing"]));
@@ -37,7 +37,7 @@ namespace KinectV2MouseControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int Mode {
             get {
                 return ((int)(this["Mode"]));
@@ -49,7 +49,7 @@ namespace KinectV2MouseControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.3")]
         public double MoveScale {
             get {
                 return ((double)(this["MoveScale"]));
@@ -61,7 +61,7 @@ namespace KinectV2MouseControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public double HoverRange {
             get {
                 return ((double)(this["HoverRange"]));
