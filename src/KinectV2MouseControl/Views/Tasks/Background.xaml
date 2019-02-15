@@ -1,0 +1,49 @@
+﻿<Window x:Class="KinectV2MouseControl.Views.Tasks.Background"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:KinectV2MouseControl.Views.Tasks"
+        mc:Ignorable="d"
+        Title="Background" Height="1080" Width="1920" WindowState="Maximized" Background="LightGray">
+    <Window.Resources>
+        <System:Int32 x:Key="RegionRatio">2</System:Int32>
+    </Window.Resources>
+    <Grid Name="Main_Grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Canvas Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" x:Name="canvas" />
+        <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" x:Name="image" />
+        <Rectangle x:Name="LHS_Region" Grid.Column="0" Grid.RowSpan="3" Opacity="0"/>
+        <Rectangle x:Name="RHS_Region" Grid.Column="2" Grid.RowSpan="3" Opacity="0"/>
+        <Rectangle x:Name="TOP_Region" Grid.Row="0" Grid.ColumnSpan="3" Opacity="0"/>
+        <Rectangle x:Name="BOT_Region" Grid.Row="2" Grid.ColumnSpan="3" Opacity="0"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <TextBlock x:Name="textblock" FontSize="60" 
+                       Text="Kinect Dissertation Project" TextAlignment="Center"/>
+        </StackPanel>
+        
+        <Grid x:Name="LHS_Grid" Grid.Column="0" Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Grid x:Name="RHS_Grid" Grid.Column="2" Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+        </Grid>
+    </Grid>
+</Window>

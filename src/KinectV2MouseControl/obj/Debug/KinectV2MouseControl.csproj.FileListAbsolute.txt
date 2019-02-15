@@ -26,3 +26,6 @@ C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseContr
 C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\KinectV2MouseControl.csproj.CopyComplete
 C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\KinectV2MouseControl.exe
 C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\KinectV2MouseControl.pdb
+C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\KinectV2MouseControl.csprojAssemblyReference.cache
+C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\Views\Tasks\Background.g.cs
+C:\Users\Alex\prog\Kinect Demos\LocalKinectV2MouseControl\src\KinectV2MouseControl\obj\Debug\Views\Tasks\Background.baml

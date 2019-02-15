@@ -59,6 +59,9 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\KinectCursorViewModel.cs" />
     <Compile Include="Views\RadioCheckedToBoolConverter.cs" />
+    <Compile Include="Views\Tasks\Background.xaml.cs">
+      <DependentUpon>Background.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tasks\Lighting_Control.xaml.cs">
       <DependentUpon>Lighting_Control.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Background.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

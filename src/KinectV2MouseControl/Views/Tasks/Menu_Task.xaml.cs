@@ -22,6 +22,7 @@ namespace KinectV2MouseControl.Views.Tasks
         public Menu_Task()
         {
             InitializeComponent();
+            Loaded += Menu_Task_Loaded;
         }
 
         private bool IsMainMenu = true;

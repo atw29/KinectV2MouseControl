@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using KinectV2MouseControl.Views.Tasks;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ControlMode = KinectV2MouseControl.KinectCursor.ControlMode;
 
@@ -19,6 +20,8 @@ namespace KinectV2MouseControl
         public KinectCursorViewModel()
         {
             kinectCursor = new KinectCursor();
+            //new Background().Show();
+            //new Menu_Task().Show();
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)

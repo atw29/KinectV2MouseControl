@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using KinectV2MouseControl.Views.Tasks;
+using System.Windows;
 
 namespace KinectV2MouseControl
 {
@@ -12,6 +13,9 @@ namespace KinectV2MouseControl
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CursorViewModel.LoadSettings();
+
+            new Background().Show();
+            new Menu_Task().Show();
         }
 
         private void DefaultButton_Click(object sender, RoutedEventArgs e)
