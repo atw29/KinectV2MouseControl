@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Kinect;
@@ -58,7 +60,8 @@ namespace KinectV2MouseControl
         /// Rect value worked out by pointing to left, top, right, bottom spot with my hand as the ideal edges, and noting down the x, y values got from GetHandRelativePosition.
         /// This may only fit more for me, and you can test out your rect value. Approximately it works fine for most people.
         /// </summary>
-        private MRect gestureRect = new MRect(-0.18, 1.65, 0.18, -1.65);
+        //private MRect gestureRect = new MRect(-0.18, 1.65, 0.18, -1.65); //// Theirs 
+        private MRect gestureRect = new MRect(-0.1, 1.65, 0.18, -1.8);  // Left Top Right Bottom
 
         private bool[] handGrips = new bool[2] { false, false };
 
@@ -113,6 +116,10 @@ namespace KinectV2MouseControl
         /// </summary>
         private int usedHandIndex = NONE_USED;
         private bool hoverClicked = false;
+        private bool handWasClosed;
+
+        private List<double> xPosList;
+        private List<double> yPosList;
 
         public KinectCursor()
         {
@@ -124,6 +131,9 @@ namespace KinectV2MouseControl
             sensorReader.OnLostTracking += Kinect_OnLostTracking;
             hoverTimer.Interval = TimeSpan.FromSeconds(HoverDuration);
             hoverTimer.Tick += new EventHandler(HoverTimer_Tick);
+
+            xPosList = new List<double>();
+            yPosList = new List<double>();
         }
 
         private void Kinect_OnLostTracking(object sender, EventArgs e)
@@ -142,10 +152,10 @@ namespace KinectV2MouseControl
             {
                 return;
             }
-
+            
             for(int i = 1; i >= 0; i--) // Starts looking from right hand.
             {
-                bool isLeft = (i == 0);
+                bool isLeft = false;
                 if (body.IsHandLiftForward(isLeft))
                 {
                     if (usedHandIndex == -1)
@@ -164,7 +174,15 @@ namespace KinectV2MouseControl
 
                     MVector2 handPos = body.GetHandRelativePosition(isLeft);
                     MVector2 targetPos = cursorMapper.GetSmoothedOutputPosition(handPos);
-                    //System.Diagnostics.Trace.WriteLine(handPos.ToString());
+
+                    xPosList.Add(handPos.X);
+                    yPosList.Add(handPos.Y);
+                    if (xPosList.Count > 50 && yPosList.Count > 50)
+                    {
+                        //System.Diagnostics.Trace.WriteLine(handPos.ToString());
+                        //System.Diagnostics.Trace.WriteLine($"X : {xPosList.Average()} ; Y : {yPosList.Average()}");
+
+                    }
 
                     MouseControl.MoveTo(targetPos.X, targetPos.Y);
 
@@ -215,8 +233,15 @@ namespace KinectV2MouseControl
             {
                 case HandState.Closed:
                     controlState = MouseControlState.ShouldPress;
+                    System.Diagnostics.Debug.WriteLine("Hand Closed");
+                    handWasClosed = true;
                     break;
                 case HandState.Open:
+                    if (handWasClosed)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Hand Open");
+                        handWasClosed = false;
+                    }
                     controlState = MouseControlState.ShouldRelease;
                     break;
                 default:
@@ -247,9 +272,9 @@ namespace KinectV2MouseControl
         {
             if (controlState == MouseControlState.ShouldClick)
             {
+                MouseControl.Click();
                 if (!handGrips[handIndex])
                 {
-                    MouseControl.Click();
                     handGrips[handIndex] = true;
                 }
             }else if (controlState == MouseControlState.ShouldPress)

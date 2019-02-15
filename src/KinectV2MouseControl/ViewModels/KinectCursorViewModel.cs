@@ -20,8 +20,6 @@ namespace KinectV2MouseControl
         public KinectCursorViewModel()
         {
             kinectCursor = new KinectCursor();
-            //new Background().Show();
-            //new Menu_Task().Show();
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)

@@ -6,7 +6,7 @@
       <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="Mode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="MoveScale" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.5</Value>
