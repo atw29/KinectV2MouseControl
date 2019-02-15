@@ -233,8 +233,14 @@ namespace KinectV2MouseControl
             {
                 case HandState.Closed:
                     controlState = MouseControlState.ShouldPress;
-                    System.Diagnostics.Debug.WriteLine("Hand Closed");
-                    handWasClosed = true;
+                    if (!handWasClosed)
+                    {
+                        controlState = MouseControlState.ShouldClick;
+                        System.Diagnostics.Debug.WriteLine("Hand Closed for First Time");
+                        handWasClosed = true;
+                    }
+                    //System.Diagnostics.Debug.WriteLine("Hand Closed");
+                    //handWasClosed = true;
                     break;
                 case HandState.Open:
                     if (handWasClosed)
