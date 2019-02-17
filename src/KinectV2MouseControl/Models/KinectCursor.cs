@@ -61,7 +61,7 @@ namespace KinectV2MouseControl
         /// This may only fit more for me, and you can test out your rect value. Approximately it works fine for most people.
         /// </summary>
         //private MRect gestureRect = new MRect(-0.18, 1.65, 0.18, -1.65); //// Theirs 
-        private MRect gestureRect = new MRect(-0.1, 1.65, 0.18, -1.8);  // Left Top Right Bottom
+        private MRect gestureRect = new MRect(-0.1, 1.4, 0.18, -1.8);  // Left Top Right Bottom // Decrease Top = Better Grip Recognition up top
 
         private bool[] handGrips = new bool[2] { false, false };
 
