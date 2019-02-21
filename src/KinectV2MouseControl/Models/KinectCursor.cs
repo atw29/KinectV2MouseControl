@@ -12,6 +12,8 @@ namespace KinectV2MouseControl
         private KinectReader sensorReader;
         private CursorMapper cursorMapper;
 
+        private readonly bool NeedGrabbing = false;
+
         public enum ControlMode
         {
             Disabled = 0,
@@ -61,7 +63,9 @@ namespace KinectV2MouseControl
         /// This may only fit more for me, and you can test out your rect value. Approximately it works fine for most people.
         /// </summary>
         //private MRect gestureRect = new MRect(-0.18, 1.65, 0.18, -1.65); //// Theirs 
-        private MRect gestureRect = new MRect(-0.1, 1.4, 0.18, -1.8);  // Left Top Right Bottom // Decrease Top = Better Grip Recognition up top
+        // Decrease Top = Better Grip Recognition up top
+        // Increase Right - Worse recognition right
+        private MRect gestureRect = new MRect(-0.1, 1.2, 0.15, -1.6);  // Left Top Right Bottom 
 
         private bool[] handGrips = new bool[2] { false, false };
 
@@ -320,10 +324,10 @@ namespace KinectV2MouseControl
 
         private void ReleaseGrip(int index)
         {
-            //MouseControl.PressUp(); // Here for ability to click on maximise/minimise but not drag
+            if (!NeedGrabbing) MouseControl.PressUp(); // Here for ability to click on maximise/minimise but not drag
             if (handGrips[index])
             {
-                MouseControl.PressUp(); // Here for dragging but no max/min
+                if (NeedGrabbing) MouseControl.PressUp(); // Here for dragging but no max/min
                 handGrips[index] = false;
             }
         }
