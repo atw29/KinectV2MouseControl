@@ -54,7 +54,7 @@ namespace KinectV2MouseControl.Views.Tasks
                 group.Children.Add(tt);
                 child.RenderTransform = group;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
-                this.MouseWheel += child_MouseWheel;
+                this.MouseWheel += Child_MouseWheel;
                 this.MouseLeftButtonDown += child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += child_MouseLeftButtonUp;
                 this.MouseMove += child_MouseMove;
@@ -79,31 +79,44 @@ namespace KinectV2MouseControl.Views.Tasks
             }
         }
 
+        public void ZoomCentre(bool In)
+        {
+            if (child != null && child is Image image)
+            {
+                Zoom(In ? 1 : 0, new Point(image.ActualWidth / 2, image.ActualHeight / 2));
+            }
+        }
+
+        public void Zoom(int MouseWheelDelta, Point point)
+        {
+            var st = GetScaleTransform(child);
+            var tt = GetTranslateTransform(child);
+
+            double zoom = MouseWheelDelta > 0 ? .2 : -.2;
+            if (!(MouseWheelDelta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
+                return;
+
+            double abosuluteX;
+            double abosuluteY;
+
+            abosuluteX = point.X * st.ScaleX + tt.X;
+            abosuluteY = point.Y * st.ScaleY + tt.Y;
+
+            st.ScaleX += zoom;
+            st.ScaleY += zoom;
+
+            tt.X = abosuluteX - point.X * st.ScaleX;
+            tt.Y = abosuluteY - point.Y * st.ScaleY;
+
+        }
+
         #region Child Events
 
-        private void child_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (child != null)
             {
-                var st = GetScaleTransform(child);
-                var tt = GetTranslateTransform(child);
-
-                double zoom = e.Delta > 0 ? .2 : -.2;
-                if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
-                    return;
-
-                Point relative = e.GetPosition(child);
-                double abosuluteX;
-                double abosuluteY;
-
-                abosuluteX = relative.X * st.ScaleX + tt.X;
-                abosuluteY = relative.Y * st.ScaleY + tt.Y;
-
-                st.ScaleX += zoom;
-                st.ScaleY += zoom;
-
-                tt.X = abosuluteX - relative.X * st.ScaleX;
-                tt.Y = abosuluteY - relative.Y * st.ScaleY;
+                Zoom(e.Delta, e.GetPosition(child));
             }
         }
 

@@ -23,12 +23,15 @@ namespace KinectV2MouseControl.Views.Tasks
         public X_Rays()
         {
             InitializeComponent();
-            Loaded += X_Rays_Loaded;
         }
 
-        private void X_Rays_Loaded(object sender, RoutedEventArgs e)
+        private void Zoom_In(object sender, RoutedEventArgs e)
         {
-            ZoomBorder _ZoomBorder = new ZoomBorder();
+            Picture.ZoomCentre(true);
+        }
+        private void Zoom_Out(object sender, RoutedEventArgs e)
+        {
+            Picture.ZoomCentre(false);
         }
     }
 }

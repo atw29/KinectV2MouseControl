@@ -12,7 +12,7 @@ namespace KinectV2MouseControl
         private KinectReader sensorReader;
         private CursorMapper cursorMapper;
 
-        private readonly bool NeedGrabbing = false;
+        private readonly bool NeedGrabbing = true;
 
         public enum ControlMode
         {
