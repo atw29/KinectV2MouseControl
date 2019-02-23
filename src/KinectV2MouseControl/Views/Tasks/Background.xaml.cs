@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace KinectV2MouseControl.Views.Tasks
 {
@@ -22,6 +23,15 @@ namespace KinectV2MouseControl.Views.Tasks
         public Background()
         {
             InitializeComponent();
+            DispatcherTimer timer = new DispatcherTimer(
+                new TimeSpan(0, 0, 1),
+                DispatcherPriority.Normal,
+                delegate
+                {
+                    time.Text = DateTime.Now.ToString("HH:mm:ss");
+                },
+                Dispatcher
+            );
         }
     }
 }
