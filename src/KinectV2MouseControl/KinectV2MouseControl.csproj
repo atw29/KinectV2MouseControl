@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DataCollector.cs" />
     <Compile Include="ViewModels\KinectCursorViewModel.cs" />
     <Compile Include="Views\RadioCheckedToBoolConverter.cs" />
     <Compile Include="Views\Tasks\Background.xaml.cs">

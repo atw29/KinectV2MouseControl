@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using KinectV2MouseControl.Models;
 using Microsoft.Kinect;
 
 namespace KinectV2MouseControl
@@ -120,9 +123,8 @@ namespace KinectV2MouseControl
         /// </summary>
         private int usedHandIndex = NONE_USED;
         private bool hoverClicked = false;
+
         
-        private List<double> xPosList;
-        private List<double> yPosList;
 
         public KinectCursor()
         {
@@ -132,11 +134,12 @@ namespace KinectV2MouseControl
             sensorReader = new KinectReader(false);
             sensorReader.OnTrackedBody += Kinect_OnTrackedBody;
             sensorReader.OnLostTracking += Kinect_OnLostTracking;
+
             hoverTimer.Interval = TimeSpan.FromSeconds(HoverDuration);
             hoverTimer.Tick += new EventHandler(HoverTimer_Tick);
 
-            xPosList = new List<double>();
-            yPosList = new List<double>();
+
+            dataQueue = DataCollectorFactory.Start();
             
         }
 
@@ -159,7 +162,7 @@ namespace KinectV2MouseControl
             
             for(int i = 1; i >= 0; i--) // Starts looking from right hand.
             {
-                bool isLeft = (i == 0); // = (i == 0)
+                bool isLeft = i == 0;
                 if (body.IsHandLiftForward(isLeft))
                 {
                     if (usedHandIndex == -1)
@@ -179,20 +182,13 @@ namespace KinectV2MouseControl
                     MVector2 handPos = body.GetHandRelativePosition(isLeft);
                     MVector2 targetPos = cursorMapper.GetSmoothedOutputPosition(handPos);
 
-                    //xPosList.Add(handPos.X);
-                    //yPosList.Add(handPos.Y);
-                    //if (xPosList.Count > 50 && yPosList.Count > 50)
-                    //{
-                    //    //System.Diagnostics.Trace.WriteLine(handPos.ToString());
-                    //    //System.Diagnostics.Trace.WriteLine($"X : {xPosList.Average()} ; Y : {yPosList.Average()}");
-
-                    //}
-
                     MouseControl.MoveTo(targetPos.X, targetPos.Y);
 
                     if (Mode == ControlMode.GripToPress)
                     {
-                        DoMouseControlByHandState(i, body.GetHandState(isLeft));
+                        MouseControlState state = DoMouseControlByHandState(i, body.GetHandState(isLeft));
+                        dataQueue.Add(new Data(targetPos.X, targetPos.Y, state));
+
                     }
                     else if (Mode == ControlMode.HoverToClick)
                     {
@@ -230,6 +226,8 @@ namespace KinectV2MouseControl
             ToggleHoverTimer(Mode == ControlMode.HoverToClick && usedHandIndex != -1);
         }
         private int NumberTimesClosed = 0;
+        private BlockingCollection<Data> dataQueue;
+
         private MouseControlState OnlyClick()
         {
             MouseControlState controlState;
@@ -256,9 +254,10 @@ namespace KinectV2MouseControl
             // Doesn't Appear to Work
             return controlState;
         }
-        private void DoMouseControlByHandState(int handIndex, HandState handState)
+
+        private MouseControlState DoMouseControlByHandState(int handIndex, HandState handState)
         {
-            MouseControlState controlState;
+            MouseControlState controlState; 
             switch (handState)
             {
                 case HandState.Closed:
@@ -279,7 +278,7 @@ namespace KinectV2MouseControl
                     controlState = MouseControlState.None;
                     break;
             }
-            UpdateHandMouseControl(handIndex, controlState);
+            return UpdateHandMouseControl(handIndex, controlState);
         }
 
         private void DoMouseClickByHandLifting(int handIndex, MVector2 handRelativePos)
@@ -291,15 +290,18 @@ namespace KinectV2MouseControl
             //UpdateHandMouseControl(handIndex, controlState);
         }
 
-        private enum MouseControlState
+        public enum MouseControlState
         {
             None,
             ShouldPress,
             ShouldRelease,
             ShouldClick,
+            Clicked,
+            PressedDown,
+            PressedUp
         }
 
-        private void UpdateHandMouseControl(int handIndex, MouseControlState controlState)
+        private MouseControlState UpdateHandMouseControl(int handIndex, MouseControlState controlState)
         {
             if (controlState == MouseControlState.ShouldClick)
             {
@@ -307,6 +309,7 @@ namespace KinectV2MouseControl
                 {
                     MouseControl.Click();
                     handGrips[handIndex] = true;
+                    return MouseControlState.Clicked;
                 }
             }else if (controlState == MouseControlState.ShouldPress)
             {
@@ -314,17 +317,23 @@ namespace KinectV2MouseControl
                 {
                     MouseControl.PressDown();
                     handGrips[handIndex] = true;
+                    return MouseControlState.PressedDown;
                 }
             }
             else if (controlState == MouseControlState.ShouldRelease && handGrips[handIndex])
             {
                 ReleaseGrip(handIndex);
+                return MouseControlState.PressedUp;
             }
+            return MouseControlState.None;
         }
 
         private void ReleaseGrip(int index)
         {
-            if (!NeedGrabbing) MouseControl.PressUp(); // Here for ability to click on maximise/minimise but not drag
+            if (!NeedGrabbing)
+            {
+                MouseControl.PressUp(); // Here for ability to click on maximise/minimise but not drag
+            }
             if (handGrips[index])
             {
                 if (NeedGrabbing) MouseControl.PressUp(); // Here for dragging but no max/min
