@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,14 @@ namespace KinectV2MouseControl.Models
         {
             BlockingCollection<Data> datas = new BlockingCollection<Data>();
             DataCollector dataCollector = new DataCollector(datas);
+            dataCollector.Start();
             return datas;
         }
 
-        
+        public static string PrintTime(this DateTime dateTime)
+        {
+            return dateTime.ToString("HH:mm:ss");
+        }
     }
 
     public class DataCollector
@@ -33,34 +38,57 @@ namespace KinectV2MouseControl.Models
         private readonly string path;
 
 
-        public DataCollector(BlockingCollection<Data> queue)
+        public DataCollector(BlockingCollection<Data> Queue)
         {
-            token = new CancellationTokenSource();
 
+            token = new CancellationTokenSource();
             opened = DateTime.Now;
 
             path = $"{folder}{opened.ToString("yyyy.MM.dd HH.mm.ss")}.csv";
 
-            CreateFile(opened);
-            t = new Thread(new ThreadStart(Perform_Execution));
+            queue = Queue;
+
+            var domain = AppDomain.CurrentDomain;
+            var process = Process.GetCurrentProcess();
+
+            process.Exited += Process_Exited;
+            domain.ProcessExit += Process_Exited;
+            domain.DomainUnload += Process_Exited;
+
+            t = new Thread(new ThreadStart(Perform_Execution))
+            {
+                Name = "Data Collector Thread"
+            };
+        }
+
+        private void Process_Exited(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Stopping Process");
+            Stop();
         }
 
         public void Start()
         {
+
+            CreateFile(opened);
+
             t.Start();
         }
 
         public void Stop()
         {
+            System.Diagnostics.Debug.WriteLine("Stopping Data Collector Thread");
             token.Cancel();
+            queue.Add(DataCollectorFactory.PoisonData);
+            
         }
 
         private void CreateFile(DateTime opened)
         {
             using (var writer = File.CreateText(path))
             {
-                writer.WriteLine($"CLICK_STATE, X_POS, Y_POS, TIME, PARASITE");
-                writer.WriteLine($"start,,,{opened.ToString("HH:mm:ss")},");
+                writer.WriteLine($"CLICK_STATE,X_POS,Y_POS,TIME,PARASITE");
+                writer.WriteLine($"start,,,{opened.PrintTime()},");
             }
         }
 
@@ -68,8 +96,25 @@ namespace KinectV2MouseControl.Models
         {
             while (queue.TryTake(out Data data, Timeout.Infinite, token.Token))
             {
-                WriteString($"{data.State}, {data.XPos}, {data.YPos}, {DateTime.Now.ToString("HH:mm:ss")},");
+                WriteString(data.ToString());
+                if (data.Equals(DataCollectorFactory.PoisonData))
+                {
+                    break;
+                }
+                //System.Diagnostics.Trace.WriteLine($"Writing Data : {data.State}");
             }
+            System.Diagnostics.Debug.WriteLine("Finishing Writing Objects in Queue ");
+            try
+            {
+                while (true)
+                {
+                    WriteString(queue.Take().ToString());
+                }
+            } catch (InvalidOperationException)
+            {
+                System.Diagnostics.Debug.WriteLine("Finished Writing Queue");
+            }
+            WriteString($"end,,,{DateTime.Now.PrintTime()},");
         }
 
         private void WriteString(string toWrite)
@@ -95,5 +140,10 @@ namespace KinectV2MouseControl.Models
         public double YPos { get; }
 
         public double XPos { get; }
+
+        public override string ToString()
+        {
+            return $"{State},{XPos},{YPos},{DateTime.Now.ToString("HH:mm:ss")},";
+        }
     }
 }

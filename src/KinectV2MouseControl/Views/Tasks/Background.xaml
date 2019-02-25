@@ -25,7 +25,10 @@
         <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" x:Name="image" />
         <Rectangle x:Name="LHS_Region" Grid.Column="0" Grid.RowSpan="3" Opacity="0"/>
         <Rectangle x:Name="RHS_Region" Grid.Column="2" Grid.RowSpan="3" Opacity="0"/>
-        <Rectangle x:Name="BOT_Region" Grid.Row="2" Grid.ColumnSpan="3" Opacity="0"/>
+
+        <StackPanel Name="BOT_Region" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+            <TextBlock x:Name="pos" FontSize="40" HorizontalAlignment="Center"/>
+        </StackPanel>
 
         <StackPanel x:Name="TOP_Region" Grid.Row="0" Grid.Column="1"  VerticalAlignment="Center">
             <TextBlock x:Name="time" FontSize="40" HorizontalAlignment="Center"/>
