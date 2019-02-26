@@ -15,7 +15,7 @@ namespace KinectV2MouseControl
         private KinectReader sensorReader;
         private CursorMapper cursorMapper;
 
-        private readonly bool NeedGrabbing = true;
+        public bool NeedGrabbing { get; set; }
 
         public enum ControlMode
         {
@@ -126,7 +126,7 @@ namespace KinectV2MouseControl
 
         public event EventHandler<Data> PositionDataUpdated;
 
-        public KinectCursor()
+        public KinectCursor(string USER, int TASK_NUM)
         {
             MRect screenRect = new MRect(0, 0, SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
             cursorMapper = new CursorMapper(gestureRect, screenRect, CursorMapper.ScaleAlignment.LongerRange);
@@ -138,7 +138,7 @@ namespace KinectV2MouseControl
             hoverTimer.Interval = TimeSpan.FromSeconds(HoverDuration);
             hoverTimer.Tick += new EventHandler(HoverTimer_Tick);
 
-            DataCollector = DataCollectorFactory.Start();
+            DataCollector = DataCollectorFactory.Start(USER, TASK_NUM);
             
         }
 
@@ -149,6 +149,7 @@ namespace KinectV2MouseControl
 
         private void Kinect_OnLostTracking(object sender, EventArgs e)
         {
+            Console.WriteLine("Lost Tracking");
             ToggleHoverTimer(false);
             ReleaseGrip(0);
             ReleaseGrip(1);

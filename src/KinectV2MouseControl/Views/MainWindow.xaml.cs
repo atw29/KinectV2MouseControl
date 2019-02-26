@@ -14,8 +14,7 @@ namespace KinectV2MouseControl
         {
             CursorViewModel.LoadSettings();
 
-            new Background().Show();
-            new Menu_Task().Show();
+            CursorViewModel.Create_Task();
 
             Closed += MainWindow_Closed;
         }

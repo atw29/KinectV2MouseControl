@@ -14,6 +14,55 @@ namespace KinectV2MouseControl
 
         KinectCursor kinectCursor;
 
+        /// PUT USER'S NAME HERE
+        const string USER = "ALEX_TEST";
+
+        // CHANGE THE TASK NUMBER 
+        const int TASK_NUM = 1;
+
+        internal void Create_Task()
+        {
+            Run_Task(USER, TASK_NUM);
+        }
+
+        private void Run_Task(string USER, int TASK_NUM)
+        {
+            new Background().Show();
+            new Menu_Task().Show();
+            
+            kinectCursor.NeedGrabbing = TASK_NUM > 3;
+            
+            switch (TASK_NUM)
+            {
+                case 2:
+                    new MockUp().Show();
+                    break;
+
+                case 3:
+                    new X_Rays().Show();
+                    break;
+
+                case 4:
+                    new MockUp().Show();
+                    break;
+
+                case 5:
+                    new Lighting_Control().Show();
+                    break;
+
+                case 6:
+                    new MockUp().Show();
+                    break;
+
+                case 7:
+                    new X_Rays().Show();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         const double DEFAULT_MOVE_SCALE = 1f;
         const double DEFAULT_SMOOTHING = 0.2f;
         const double DEFAULT_HOVER_RANGE = 20f;
@@ -34,14 +83,12 @@ namespace KinectV2MouseControl
 
         public KinectCursorViewModel()
         {
-            kinectCursor = new KinectCursor();
+            kinectCursor = new KinectCursor(USER, TASK_NUM);
             kinectCursor.PositionDataUpdated += KinectCursor_PositionDataUpdated;
-            pos = "Testing";
         }
 
         private void KinectCursor_PositionDataUpdated(object sender, Data e)
         {
-            Console.WriteLine(e.ToString());
             WriteData?.Invoke(sender, e);
         }
 
