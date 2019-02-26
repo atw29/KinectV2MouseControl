@@ -24,7 +24,7 @@ namespace KinectV2MouseControl.Models
 
             BlockingCollection<Data> datas = new BlockingCollection<Data>();
 
-            DataCollector dataCollector = new DataCollector(datas, dir);
+            DataCollector dataCollector = new DataCollector(datas, dir, USER, TASK_NUM);
 
             dataCollector.Start();
             return dataCollector;
@@ -39,39 +39,57 @@ namespace KinectV2MouseControl.Models
     public class DataCollector
     {
         private BlockingCollection<Data> Queue;
-        private readonly string path;
 
+        private readonly string User;
+        private readonly int Task_Num;
+
+        private readonly string DataPath;
+        private readonly string InfoPath;
         private readonly DateTime WhenOpened;
 
-        public DataCollector(BlockingCollection<Data> Queue, string dir)
+        public DataCollector(BlockingCollection<Data> Queue, string dir, string USER, int TASK_NUM)
         {
             WhenOpened = DateTime.Now;
 
-            path = Path.Combine(dir, $"{WhenOpened.ToString("yyyy.MM.dd HH.mm.ss")}.csv");
+            User = USER;
+            Task_Num = TASK_NUM;
+
+            string FileName = WhenOpened.ToString("yyyy.MM.dd HH.mm.ss");
+            DataPath = Path.Combine(dir, $"{FileName}.csv");
+            InfoPath = Path.Combine(dir, $"{FileName}.info");
 
             this.Queue = Queue;
         }
 
         public void Start()
         {
-            CreateFile();
+            CreateInfoFile();
+            CreateDataFile();
 
             Task.Factory.StartNew(Perform_Execution);
         }
-
         public void Stop()
         {
             Debug.WriteLine("Stopping Data Collector Thread");
             Queue.Add(DataCollectorFactory.PoisonData);
-            //Queue.CompleteAdding();
         }
 
-        private void CreateFile()
+        private void CreateDataFile()
         {
-            using (var writer = File.CreateText(path))
+            using (var writer = File.CreateText(DataPath))
             {
                 writer.WriteLine($"CLICK_STATE,X_POS,Y_POS,TIME,PARASITE");
-                writer.WriteLine($"start,,,{WhenOpened.PrintTime()},");
+            }
+        }
+
+        private void CreateInfoFile()
+        {
+            using (var writer = File.CreateText(InfoPath))
+            {
+                writer.WriteLine($"start: {WhenOpened.PrintTime()}");
+                writer.WriteLine($"user: {User}");
+                writer.WriteLine($"type: MI");
+                writer.WriteLine($"task_num: {Task_Num}");
             }
         }
         void Perform_Execution()
@@ -82,7 +100,7 @@ namespace KinectV2MouseControl.Models
                 {
                     break;
                 }
-                WriteString(data.ToString());
+                WriteString(DataPath, data.ToString());
             }
             if (Queue.Count > 0)
             {
@@ -90,20 +108,21 @@ namespace KinectV2MouseControl.Models
                 {
                     while (true)
                     {
-                        WriteString(Queue.Take().ToString());
+                        WriteString(DataPath, Queue.Take().ToString());
                     }
                 } catch (InvalidOperationException)
                 {
                     Debug.WriteLine("Finished Writing Queue");
                 }
             }
+
             Debug.WriteLine("Finishing Writing Objects in Queue ");
-            WriteString($"end,,,{DateTime.Now.PrintTime()},");
+            WriteString(InfoPath, $"end: {DateTime.Now.PrintTime()}");
         }
 
-        private void WriteString(string toWrite)
+        private void WriteString(string Path, string toWrite)
         {
-            using (var writer = new StreamWriter(path, true))
+            using (var writer = new StreamWriter(Path, true))
             {
                 writer.WriteLine(toWrite);
             }
