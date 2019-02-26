@@ -20,9 +20,18 @@ namespace KinectV2MouseControl.Views.Tasks
     /// </summary>
     public partial class Background : Window
     {
+        private KinectCursorViewModel viewModel;
+
         public Background()
         {
             InitializeComponent();
+
+
+            viewModel = KinectCursorViewModel.Instance;
+            DataContext = viewModel;
+
+            viewModel.WriteData += ViewModel_WriteData;
+
             DispatcherTimer timer = new DispatcherTimer(
                 new TimeSpan(0, 0, 1),
                 DispatcherPriority.Normal,
@@ -32,6 +41,11 @@ namespace KinectV2MouseControl.Views.Tasks
                 },
                 Dispatcher
             );
+        }
+
+        private void ViewModel_WriteData(object sender, Models.Data e)
+        {
+            pos.Text = e.ToString();
         }
     }
 }

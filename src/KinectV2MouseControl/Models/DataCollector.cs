@@ -14,12 +14,12 @@ namespace KinectV2MouseControl.Models
     public static class DataCollectorFactory
     {
         public static readonly Data PoisonData = new Data(-10000, -10000, MouseControlState.None);
-        public static BlockingCollection<Data> Start()
+        public static DataCollector Start()
         {
             BlockingCollection<Data> datas = new BlockingCollection<Data>();
             DataCollector dataCollector = new DataCollector(datas);
             dataCollector.Start();
-            return datas;
+            return dataCollector;
         }
 
         public static string PrintTime(this DateTime dateTime)
@@ -30,57 +30,32 @@ namespace KinectV2MouseControl.Models
 
     public class DataCollector
     {
-        private BlockingCollection<Data> queue;
-        private CancellationTokenSource token;
-        private Thread t;
+        private BlockingCollection<Data> Queue;
         private readonly DateTime opened;
         private const string folder = "C:\\Users\\Alex\\Google Drive\\University Drive\\Bath Drive\\Third Year\\Diss\\Other\\data\\";
         private readonly string path;
 
-
         public DataCollector(BlockingCollection<Data> Queue)
         {
-
-            token = new CancellationTokenSource();
             opened = DateTime.Now;
 
             path = $"{folder}{opened.ToString("yyyy.MM.dd HH.mm.ss")}.csv";
 
-            queue = Queue;
-
-            var domain = AppDomain.CurrentDomain;
-            var process = Process.GetCurrentProcess();
-
-            process.Exited += Process_Exited;
-            domain.ProcessExit += Process_Exited;
-            domain.DomainUnload += Process_Exited;
-
-            t = new Thread(new ThreadStart(Perform_Execution))
-            {
-                Name = "Data Collector Thread"
-            };
-        }
-
-        private void Process_Exited(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Stopping Process");
-            Stop();
+            this.Queue = Queue;
         }
 
         public void Start()
         {
-
             CreateFile(opened);
 
-            t.Start();
+            Task.Factory.StartNew(Perform_Execution);
         }
 
         public void Stop()
         {
-            System.Diagnostics.Debug.WriteLine("Stopping Data Collector Thread");
-            token.Cancel();
-            queue.Add(DataCollectorFactory.PoisonData);
-            
+            Debug.WriteLine("Stopping Data Collector Thread");
+            Queue.Add(DataCollectorFactory.PoisonData);
+            //Queue.CompleteAdding();
         }
 
         private void CreateFile(DateTime opened)
@@ -91,28 +66,29 @@ namespace KinectV2MouseControl.Models
                 writer.WriteLine($"start,,,{opened.PrintTime()},");
             }
         }
-
-        private void Perform_Execution()
+        void Perform_Execution()
         {
-            while (queue.TryTake(out Data data, Timeout.Infinite, token.Token))
+            while (Queue.TryTake(out Data data, Timeout.Infinite))
             {
                 WriteString(data.ToString());
                 if (data.Equals(DataCollectorFactory.PoisonData))
                 {
                     break;
                 }
-                //System.Diagnostics.Trace.WriteLine($"Writing Data : {data.State}");
             }
-            System.Diagnostics.Debug.WriteLine("Finishing Writing Objects in Queue ");
-            try
+            Debug.WriteLine("Finishing Writing Objects in Queue ");
+            if (Queue.Count > 0)
             {
-                while (true)
+                try
                 {
-                    WriteString(queue.Take().ToString());
+                    while (true)
+                    {
+                        WriteString(Queue.Take().ToString());
+                    }
+                } catch (InvalidOperationException)
+                {
+                    Debug.WriteLine("Finished Writing Queue");
                 }
-            } catch (InvalidOperationException)
-            {
-                System.Diagnostics.Debug.WriteLine("Finished Writing Queue");
             }
             WriteString($"end,,,{DateTime.Now.PrintTime()},");
         }
@@ -123,6 +99,11 @@ namespace KinectV2MouseControl.Models
             {
                 writer.WriteLine(toWrite);
             }
+        }
+
+        internal void CollectData(Data d)
+        {
+            Queue.Add(d);
         }
     }
 

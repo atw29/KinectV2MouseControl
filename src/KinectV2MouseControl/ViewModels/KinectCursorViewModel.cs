@@ -1,4 +1,6 @@
-﻿using KinectV2MouseControl.Views.Tasks;
+﻿using KinectV2MouseControl.Models;
+using KinectV2MouseControl.Views.Tasks;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ControlMode = KinectV2MouseControl.KinectCursor.ControlMode;
@@ -17,9 +19,30 @@ namespace KinectV2MouseControl
         const double DEFAULT_HOVER_RANGE = 20f;
         const double DEFAULT_HOVER_DURATION = 2;
 
+        public event EventHandler<Data> WriteData;
+
+        internal void StopData()
+        {
+            kinectCursor.StopData();   
+        }
+
+        public static KinectCursorViewModel Instance { get; private set; }
+        static KinectCursorViewModel()
+        {
+            Instance = new KinectCursorViewModel();
+        }
+
         public KinectCursorViewModel()
         {
             kinectCursor = new KinectCursor();
+            kinectCursor.PositionDataUpdated += KinectCursor_PositionDataUpdated;
+            pos = "Testing";
+        }
+
+        private void KinectCursor_PositionDataUpdated(object sender, Data e)
+        {
+            Console.WriteLine(e.ToString());
+            WriteData?.Invoke(sender, e);
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
@@ -31,6 +54,20 @@ namespace KinectV2MouseControl
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region UI Comps
+
+        private string pos;
+        public string Pos
+        {
+            get
+            {
+                return pos;
+            }
+            set
+            {
+                pos = value;
+                RaisePropertyChanged("pos");
+            }
+        }
 
         public double MoveScale
         {

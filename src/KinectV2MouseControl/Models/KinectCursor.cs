@@ -124,7 +124,7 @@ namespace KinectV2MouseControl
         private int usedHandIndex = NONE_USED;
         private bool hoverClicked = false;
 
-        
+        public event EventHandler<Data> PositionDataUpdated;
 
         public KinectCursor()
         {
@@ -138,9 +138,13 @@ namespace KinectV2MouseControl
             hoverTimer.Interval = TimeSpan.FromSeconds(HoverDuration);
             hoverTimer.Tick += new EventHandler(HoverTimer_Tick);
 
-
-            dataQueue = DataCollectorFactory.Start();
+            DataCollector = DataCollectorFactory.Start();
             
+        }
+
+        public void StopData()
+        {
+            DataCollector.Stop();
         }
 
         private void Kinect_OnLostTracking(object sender, EventArgs e)
@@ -187,8 +191,9 @@ namespace KinectV2MouseControl
                     if (Mode == ControlMode.GripToPress)
                     {
                         MouseControlState state = DoMouseControlByHandState(i, body.GetHandState(isLeft));
-                        dataQueue.Add(new Data(targetPos.X, targetPos.Y, state));
-
+                        Data d = new Data(targetPos.X, targetPos.Y, state);
+                        DataCollector.CollectData(d);
+                        PositionDataUpdated?.Invoke(this, d);
                     }
                     else if (Mode == ControlMode.HoverToClick)
                     {
@@ -226,7 +231,7 @@ namespace KinectV2MouseControl
             ToggleHoverTimer(Mode == ControlMode.HoverToClick && usedHandIndex != -1);
         }
         private int NumberTimesClosed = 0;
-        private BlockingCollection<Data> dataQueue;
+        private DataCollector DataCollector;
 
         private MouseControlState OnlyClick()
         {

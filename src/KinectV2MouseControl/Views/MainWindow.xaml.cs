@@ -16,6 +16,13 @@ namespace KinectV2MouseControl
 
             new Background().Show();
             new Menu_Task().Show();
+
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, System.EventArgs e)
+        {
+            CursorViewModel.StopData();
         }
 
         private void DefaultButton_Click(object sender, RoutedEventArgs e)
