@@ -70,11 +70,11 @@ namespace KinectV2MouseControl.Models
         {
             while (Queue.TryTake(out Data data, Timeout.Infinite))
             {
-                WriteString(data.ToString());
                 if (data.Equals(DataCollectorFactory.PoisonData))
                 {
                     break;
                 }
+                WriteString(data.ToString());
             }
             Debug.WriteLine("Finishing Writing Objects in Queue ");
             if (Queue.Count > 0)
