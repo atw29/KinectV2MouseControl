@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KinectV2MouseControl.Views.Tasks"
         mc:Ignorable="d"
-        Title="X_Rays" Height="450" Width="450" >
+        Title="X_Rays" Height="450" Width="450">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*" />

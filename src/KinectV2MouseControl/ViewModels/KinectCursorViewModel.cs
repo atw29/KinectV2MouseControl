@@ -18,7 +18,7 @@ namespace KinectV2MouseControl
         const string USER = "ALEX_TEST";
 
         // CHANGE THE TASK NUMBER 
-        const int TASK_NUM = 1;
+        const int TASK_NUM = 7;
 
         internal void Create_Task()
         {
@@ -30,31 +30,33 @@ namespace KinectV2MouseControl
             new Background().Show();
             new Menu_Task().Show();
             
-            kinectCursor.NeedGrabbing = TASK_NUM > 3;
+            kinectCursor.NeedGrabbing = TASK_NUM != 3;
             
             switch (TASK_NUM)
             {
-                case 2:
+                case 2: // Switching
                     new MockUp().Show();
-                    break;
-
-                case 3:
+                    new X_Rays().Show();
                     new X_Rays().Show();
                     break;
 
-                case 4:
+                case 3: // Window Actions
+                    new X_Rays().Show();
+                    break;
+
+                case 4: // Snapping
                     new MockUp().Show();
                     break;
 
-                case 5:
+                case 5: // 2D Manipulation
                     new Lighting_Control().Show();
                     break;
 
-                case 6:
+                case 6: // Scrolling
                     new MockUp().Show();
                     break;
 
-                case 7:
+                case 7: // Pan and Zoom
                     new X_Rays().Show();
                     break;
 

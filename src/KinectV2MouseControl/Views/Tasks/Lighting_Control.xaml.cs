@@ -22,6 +22,10 @@ namespace KinectV2MouseControl.Views.Tasks
         public Lighting_Control()
         {
             InitializeComponent();
+
+            Random r = new Random();
+            Left = 400 + r.Next(50);
+            Top = 250 + r.Next(50);
         }
 
         private void Apply_Click(object sender, RoutedEventArgs e)

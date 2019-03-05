@@ -22,6 +22,10 @@ namespace KinectV2MouseControl.Views.Tasks
         public MockUp()
         {
             InitializeComponent();
+
+            Random r = new Random();
+            Left = 400 + r.Next(50);
+            Top = 250 + r.Next(50);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

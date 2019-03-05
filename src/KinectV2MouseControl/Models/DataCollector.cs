@@ -32,7 +32,7 @@ namespace KinectV2MouseControl.Models
 
         public static string PrintTime(this DateTime dateTime)
         {
-            return dateTime.ToString("HH:mm:ss");
+            return dateTime.ToString("HH:mm:ss:fff");
         }
     }
 
@@ -151,7 +151,7 @@ namespace KinectV2MouseControl.Models
 
         public override string ToString()
         {
-            return $"{State},{XPos},{YPos},{DateTime.Now.ToString("HH:mm:ss")},";
+            return $"{State},{XPos},{YPos},{DateTime.Now.PrintTime()},";
         }
     }
 }

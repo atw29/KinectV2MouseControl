@@ -23,6 +23,11 @@ namespace KinectV2MouseControl.Views.Tasks
         public X_Rays()
         {
             InitializeComponent();
+
+            Random r = new Random();
+            Left = 400 + r.Next(50);
+            Top = 250 + r.Next(50);
+            
         }
 
         private void Zoom_In(object sender, RoutedEventArgs e)
