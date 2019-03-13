@@ -3,6 +3,7 @@ using KinectV2MouseControl.Views.Tasks;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using ControlMode = KinectV2MouseControl.KinectCursor.ControlMode;
 
 namespace KinectV2MouseControl
@@ -18,50 +19,67 @@ namespace KinectV2MouseControl
         const string USER = "ALEX_TEST";
 
         // CHANGE THE TASK NUMBER 
-        const int TASK_NUM = 7;
+        const int TASK_NUM = 2;
 
         internal void Create_Task()
         {
             Run_Task(USER, TASK_NUM);
         }
 
+        private int windowcount;
+
+        private void Create_Window(Window w, bool maximised = false)
+        {
+            w.Title = w.Title + " " + windowcount;
+            if (maximised) w.WindowState = WindowState.Maximized;
+            w.Show();
+            windowcount++;
+        }
+
         private void Run_Task(string USER, int TASK_NUM)
         {
-            new Background().Show();
-            new Menu_Task().Show();
+            windowcount = 0;
+            new Background();
+
+            Create_Window(new Menu_Task());
             
             kinectCursor.NeedGrabbing = TASK_NUM != 3;
             
             switch (TASK_NUM)
             {
+                case 1:
+                    break;
+
                 case 2: // Switching
-                    new MockUp().Show();
-                    new X_Rays().Show();
-                    new X_Rays().Show();
+                    Create_Window( new MockUp(), true);
+                    
+                    Create_Window( new X_Rays(), true);
+                    Create_Window( new X_Rays(), true);
                     break;
 
                 case 3: // Window Actions
-                    new X_Rays().Show();
+                    Create_Window(new X_Rays());
                     break;
 
                 case 4: // Snapping
-                    new MockUp().Show();
+                    Create_Window(new MockUp());
                     break;
 
                 case 5: // 2D Manipulation
-                    new Lighting_Control().Show();
+                    Create_Window(new Lighting_Control());
                     break;
 
                 case 6: // Scrolling
-                    new MockUp().Show();
+                    Create_Window(new MockUp());
                     break;
 
                 case 7: // Pan and Zoom
-                    new X_Rays().Show();
+                    Create_Window(new X_Rays());
                     break;
 
                 default:
-                    break;
+                    throw new Exception("No Task for number " + TASK_NUM);
+
             }
         }
 
