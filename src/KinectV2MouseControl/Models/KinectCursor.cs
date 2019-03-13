@@ -128,6 +128,8 @@ namespace KinectV2MouseControl
 
         public KinectCursor(string USER, int TASK_NUM)
         {
+            task_num = TASK_NUM;
+
             MRect screenRect = new MRect(0, 0, SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
             cursorMapper = new CursorMapper(gestureRect, screenRect, CursorMapper.ScaleAlignment.LongerRange);
 
@@ -193,7 +195,7 @@ namespace KinectV2MouseControl
                     {
                         MouseControlState state = DoMouseControlByHandState(i, body.GetHandState(isLeft));
                         Data d = new Data(targetPos.X, targetPos.Y, state);
-                        DataCollector.CollectData(d);
+                        if (task_num != 0) DataCollector.CollectData(d);
                         PositionDataUpdated?.Invoke(this, d);
                     }
                     else if (Mode == ControlMode.HoverToClick)
@@ -233,6 +235,7 @@ namespace KinectV2MouseControl
         }
         private int NumberTimesClosed = 0;
         private DataCollector DataCollector;
+        private int task_num;
 
         private MouseControlState OnlyClick()
         {

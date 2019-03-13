@@ -39,7 +39,7 @@ namespace KinectV2MouseControl
         private void Run_Task(string USER, int TASK_NUM)
         {
             windowcount = 0;
-            new Background();
+            new Background().Show();
 
             Create_Window(new Menu_Task());
             
@@ -47,6 +47,8 @@ namespace KinectV2MouseControl
             
             switch (TASK_NUM)
             {
+                case 0: // Testing
+                    break;
                 case 1:
                     break;
 
