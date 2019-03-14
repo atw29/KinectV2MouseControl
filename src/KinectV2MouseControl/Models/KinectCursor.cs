@@ -194,7 +194,7 @@ namespace KinectV2MouseControl
                     if (Mode == ControlMode.GripToPress)
                     {
                         MouseControlState state = DoMouseControlByHandState(i, body.GetHandState(isLeft));
-                        Data d = new Data(targetPos.X, targetPos.Y, state);
+                        Data d = new Data(targetPos.X, targetPos.Y, state, body);
                         if (task_num != 0) DataCollector.CollectData(d);
                         PositionDataUpdated?.Invoke(this, d);
                     }
