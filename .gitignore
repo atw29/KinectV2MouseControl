@@ -46,3 +46,5 @@ Temporary Items
 /src/.vs/KinectV2MouseControl/v15
 /src/KinectV2MouseControl/obj/Debug/Views/Tasks
 /src/KinectV2MouseControl/obj/Debug
+/src/KinectV2MouseControl/obj/Release
+/src/KinectV2MouseControl/bin/Release

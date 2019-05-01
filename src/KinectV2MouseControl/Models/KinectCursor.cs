@@ -68,7 +68,7 @@ namespace KinectV2MouseControl
         //private MRect gestureRect = new MRect(-0.18, 1.65, 0.18, -1.65); //// Theirs 
         // Decrease Top = Better Grip Recognition up top
         // Increase Right - Worse recognition right
-        private MRect gestureRect = new MRect(-0.1, 1.2, 0.15, -1.6);  // Left Top Right Bottom 
+        private MRect gestureRect = new MRect(-0.1, 1.2, 0.15, -1.5);  // Left Top Right Bottom 
 
         private bool[] handGrips = new bool[2] { false, false };
 

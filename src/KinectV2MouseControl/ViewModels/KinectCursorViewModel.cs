@@ -16,10 +16,10 @@ namespace KinectV2MouseControl
         KinectCursor kinectCursor;
 
         /// PUT USER'S NAME HERE
-        const string USER = "ALEX_TEST";
+        const string USER = "OTHER";
 
         // CHANGE THE TASK NUMBER 
-        const int TASK_NUM = 2;
+        const int TASK_NUM = 0;
 
         internal void Create_Task()
         {

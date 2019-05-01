@@ -14,7 +14,7 @@ namespace KinectV2MouseControl.Models
 {
     public static class DataCollectorFactory
     {
-        public static readonly Data PoisonData = new Data(-10000, -10000, MouseControlState.None, 0.0, 0.0, HandState.Unknown, TrackingConfidence.Low);
+        public static readonly Data PoisonData = new Data(-10000, -10000, MouseControlState.None, 0.0, 0.0, HandState.Unknown, TrackingConfidence.Low, TrackingState.NotTracked);
         public static DataCollector Start(string USER, int TASK_NUM)
         {
             string dir = Path.Combine("C:\\Users","Alex","Google Drive","University Drive","Bath Drive", "Third Year","Diss","Other","Data",USER,"MI",TASK_NUM.ToString());
@@ -79,7 +79,7 @@ namespace KinectV2MouseControl.Models
         {
             using (var writer = File.CreateText(DataPath))
             {
-                writer.WriteLine($"CLICK_STATE,X_POS,Y_POS,X_HAND,Y_HAND,HAND_STATE,HAND_CONFIDENCE,TIME,PARASITE");
+                writer.WriteLine($"CLICK_STATE,X_POS,Y_POS,X_HAND,Y_HAND,HAND_STATE,HAND_CONFIDENCE,TRACKING_STATE,TIME,PARASITE");
             }
         }
 
@@ -139,8 +139,13 @@ namespace KinectV2MouseControl.Models
     {
         public Data(double xPos, double yPos, MouseControlState state, Body body)
         {
-            XHand = body.Joints[JointType.HandRight].Position.X;
-            YHand = body.Joints[JointType.HandRight].Position.Y;
+            Joint RightHand = body.Joints[JointType.HandRight];
+
+            XHand = RightHand.Position.X;
+            YHand = RightHand.Position.Y;
+            TrackingState = RightHand.TrackingState;
+            
+
             HandState = body.HandRightState;
             HandConfidence = body.HandRightConfidence;
 
@@ -149,12 +154,13 @@ namespace KinectV2MouseControl.Models
             State = state;
         }
 
-        public Data(double xPos, double yPos, MouseControlState state, double xHand, double yHand, HandState handState, TrackingConfidence trackingConfidence)
+        public Data(double xPos, double yPos, MouseControlState state, double xHand, double yHand, HandState handState, TrackingConfidence trackingConfidence, TrackingState trackingState)
         {
             XHand = xHand;
             YHand = yHand;
             HandState = handState;
             HandConfidence = trackingConfidence;
+            TrackingState = trackingState;
 
             XPos = xPos;
             YPos = yPos;
@@ -163,8 +169,11 @@ namespace KinectV2MouseControl.Models
 
         private readonly double XHand;
         private readonly double YHand;
+
         private readonly HandState HandState;
         private readonly TrackingConfidence HandConfidence;
+
+        private readonly TrackingState TrackingState;
 
         private readonly MouseControlState State;
         private readonly double YPos;
@@ -172,7 +181,7 @@ namespace KinectV2MouseControl.Models
 
         public override string ToString()
         {
-            return $"{State},{XPos},{YPos},{XHand},{YHand},{HandState.ToString()},{HandConfidence.ToString()},{DateTime.Now.PrintTime()},";
+            return $"{State},{XPos},{YPos},{XHand},{YHand},{HandState.ToString()},{HandConfidence.ToString()},{TrackingState.ToString()},{DateTime.Now.PrintTime()},";
         }
     }
 }
